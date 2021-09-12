@@ -1,0 +1,20 @@
+{
+    "domain": "fpl_api",
+    "name": "FPL Api",
+    "config_flow": true,
+    "documentation": "https://www.home-assistant.io/integrations/fpl_api",
+    "requirements": [
+      "fpl==0.6.28",
+      "jmespath==0.10.0",
+      "pytz==2021.1",
+      "python-dateutil==2.8.2"
+  ],
+    "ssdp": [],
+    "zeroconf": [],
+    "homekit": {},
+    "dependencies": [],
+    "codeowners": [
+      "@Hojland"
+    ],
+    "iot_class": "cloud_polling"
+  }

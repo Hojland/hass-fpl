@@ -1,0 +1,23 @@
+{
+    "jupyter.alwaysTrustNotebooks": true,
+    "jupyter.askForKernelRestart": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "editor.formatOnSave": true,
+    "python.pythonPath": "/Users/hojland/bert_ner_var/.venv/bin/python",
+    "python.formatting.provider": "black",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "python.linting.flake8Args": [
+        "--max-line-length=88"
+    ],
+    "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
+    "python.venvPath": "~/Library/Caches/pypoetry/virtualenvs",
+    "python.sortImports.args": [
+        "-rc",
+        "-sp pyproject.toml"
+    ],
+    "python.editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+    },
+}
