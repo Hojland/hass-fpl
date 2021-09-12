@@ -1,14 +1,16 @@
 {
     "domain": "fpl_api",
     "name": "FPL Api",
+    "version": "0.1.0",
     "config_flow": true,
-    "documentation": "https://www.home-assistant.io/integrations/fpl_api",
+    "documentation": "https://github.com/Hojland/hass-fpl",
     "requirements": [
       "fpl==0.6.28",
       "jmespath==0.10.0",
       "pytz==2021.1",
       "python-dateutil==2.8.2"
   ],
+    "issue_tracker": "https://github.com/Hojland/hass-fpl/issues",
     "ssdp": [],
     "zeroconf": [],
     "homekit": {},
