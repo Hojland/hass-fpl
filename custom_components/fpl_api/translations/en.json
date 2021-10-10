@@ -1,21 +1,21 @@
 {
     "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_auth": "Invalid authentication",
-            "unknown": "Unexpected error"
-        },
+        "title": "Fantasy Premier League",
         "step": {
             "user": {
+                "title": "Fantasy Premier League",
+                "description": "Setup a Fantasy Premier League sensor",
                 "data": {
-                    "team_1": "Team 1",
-                    "team_2": "Team 2",
-                    "team_3": "Team 3"
+                    "fpl_email": "Email to log into Fantasy Premier League",
+                    "fpl_password": "Password to log into Fantasy Premier League",
+                    "fpl_user_id": "User id for your team. Find it on the site",
+                    "fav_team": "Pick you favourite team to follow"
                 }
             }
+        },
+        "error": {
+            "name_exists": "Name already exists",
+            "invalid_template": "The template is invalid, check https://github.com/Hojland/hass-fpl"
         }
     }
 }

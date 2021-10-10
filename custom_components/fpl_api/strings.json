@@ -1,23 +1,24 @@
 {
-    "config": {
-      "title": "Fantasy Premier League Livescores",
-      "step": {
-        "user": {
-          "title": "Fantasy Premier League Livescores",
-          "data": {
-            "team_1": "[%key:common::config_flow::data::team_1%]",
-            "team_2": "[%key:common::config_flow::data::team_2%]",
-            "team_3": "[%key:common::config_flow::data::team_3%]"
-          }
+  "config": {
+    "title": "Fantasy Premier League Integration",
+    "step": {
+      "user": {
+        "title": "Fantasy Premier League Integration",
+        "data": {
+          "fpl_email": "[%key:common::config_flow::data::fpl_email%]",
+          "fpl_password": "[%key:common::config_flow::data::fpl_password%]",
+          "fpl_user_id": "[%key:common::config_flow::data::fpl_user_id%]",
+          "fav_team": "[%key:common::config_flow::data::fav_team%]"
         }
-      },
-      "error": {
-        "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-        "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
-        "unknown": "[%key:common::config_flow::error::unknown%]"
-      },
-      "abort": {
-        "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
       }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
     }
   }
+}
