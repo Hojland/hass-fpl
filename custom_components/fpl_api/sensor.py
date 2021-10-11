@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from typing import List
 from dateutil import parser as dateparser
 import pytz
-import asyncio
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
@@ -49,48 +48,14 @@ async def async_setup_platform(
     )
 
 
-async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the Fantasy Premier League component."""
-    hass.data[DOMAIN] = {}
-    return True
+async def async_setup_entry(hass, config, async_add_entities):
+    """Set up the sensor platform."""
 
+    fplsensor = hass.data[DOMAIN][config.entry_id]
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up FPL Api from a config entry."""
-
-    session = async_create_clientsession(hass)
-
-    fpl_email = entry.data["fpl_email"] if "fpl_email" in entry.data else None
-    fpl_password = entry.data["fpl_password"] if "fpl_password" in entry.data else None
-    fpl_user_id = entry.data["fpl_user_id"] if "fpl_user_id" in entry.data else None
-    fav_team = entry.data["fav_team"] if "fav_team" in entry.data else None
-
-    hass.data[DOMAIN][entry.entry_id] = FPLSensor(
-        hass, session, fpl_email, fpl_password, fpl_user_id, fav_team
-    )
-
-    for component in PLATFORMS:
-        hass.async_create_task(
-            hass.config_entries.async_forward_entry_setup(entry, component)
-        )
-
-    return True
-
-
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Unload a config entry."""
-    unload_ok = all(
-        await asyncio.gather(
-            *[
-                hass.config_entries.async_forward_entry_unload(entry, component)
-                for component in PLATFORMS
-            ]
-        )
-    )
-    if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id)
-
-    return unload_ok
+    sensors = []
+    sensors.append(fplsensor)
+    async_add_entities(sensors)
 
 
 def get_gameweek_score(player, gameweek):
@@ -115,13 +80,13 @@ class FPLSensor(SensorEntity):
         fav_team: str = None,
         tz="Europe/Copenhagen",
     ):
-        # self.entity_id = "sensor." + name.replace(" ", "_").lower()
+        self.entity_id = "sensor.fantasy_premier_league"
         self.hass = hass
         self.session = session
         self._state = "No games playing"
         self._state_attributes = {}
         self._scan_interval = DEFAULT_SCAN_INTERVAL
-        self.timer(datetime.today())
+        hass.async_add_executor_job(self.timer)
 
         self.pytz_tz = pytz.timezone(tz)
         self.fpl_email = fpl_email
@@ -157,7 +122,8 @@ class FPLSensor(SensorEntity):
         """Return the state attributes of the sensor."""
         return self._state_attributes
 
-    def timer(self, nowtime):
+    def timer(self):
+        nowtime = datetime.today()
         self.schedule_update_ha_state(True)
         polling_delta = self.set_polling()
         nexttime = nowtime + polling_delta
@@ -212,7 +178,7 @@ class FPLSensor(SensorEntity):
 
                 return team, top_scorer
             else:
-                return "not authenticated"
+                return None, None
 
     async def get_id2team(self):
         async with aiohttp.ClientSession() as session:
@@ -329,6 +295,7 @@ class FPLSensor(SensorEntity):
         """
         _LOGGER.debug("Fetching data from FPL")
         now = datetime.today().astimezone(tz=self.pytz_tz)
+
         if now.day != self.day:
             self.day = now.day
             await self.scroll_day()
@@ -338,6 +305,8 @@ class FPLSensor(SensorEntity):
         new_goal = {"new_goal": new_goal}
         top_scorer = {
             "top_scorer": f"{top_scorer.first_name} {top_scorer.web_name}: {get_gameweek_score(top_scorer, self.active_gameweek)}"
+            if top_scorer
+            else top_scorer
         }
 
         # Move tracked team to here later
@@ -366,11 +335,6 @@ class FPLSensor(SensorEntity):
     def name(self) -> str:
         """Return the name of the sensor."""
         return "Fantasy Premier League Sensor"
-
-    @property
-    def state(self):
-        """Return the state of the sensor."""
-        return self._state
 
     def set_polling(self):
         game_state = self._state
