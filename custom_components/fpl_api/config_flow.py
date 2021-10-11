@@ -12,6 +12,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from .const import DOMAIN
+from .sensor import FPLSensor
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,8 +71,13 @@ class PlaceholderHub:
     async def authenticate(self) -> bool:
         """Test if we can authenticate with the host."""
         try:
-            fpl = FantasyPremierLeague(
-                self.fpl_email, self.fpl_password, self.fpl_user_id, self.fav_team
+            fpl = FPLSensor(
+                None,
+                None,
+                self.fpl_email,
+                self.fpl_password,
+                self.fpl_user_id,
+                self.fav_team,
             )
             # await fpl.test_session()
         except Exception:
