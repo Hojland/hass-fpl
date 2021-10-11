@@ -1,5 +1,5 @@
 {
-    "name": "FPL API",
+    "name": "Fantasy Premier League Integration",
     "domains": ["sensor"],
     "render_readme": true
 }

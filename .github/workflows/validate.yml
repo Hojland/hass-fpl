@@ -1,8 +1,10 @@
 name: Validate
 
 on:
-  push:
   pull_request:
+    branches:
+      - main
+    types: [closed]
   schedule:
     - cron: "0 0 * * *"
 
