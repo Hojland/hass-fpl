@@ -2,6 +2,9 @@ name: Validate
 
 on:
   pull_request:
+    branches:
+      - main
+    types: [closed]
   schedule:
     - cron: "0 0 * * *"
 
