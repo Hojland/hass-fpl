@@ -25,7 +25,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
       - name: "Setup: Calculate next version number"
-        uses: mathieudutour/github-tag-action@v4.1
+        uses: mathieudutour/github-tag-action@v5.6
         id: version
         with:
           tag_prefix: "v"
